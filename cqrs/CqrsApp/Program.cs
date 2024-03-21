@@ -6,11 +6,11 @@ namespace CqrsApp
 {
     public class Program
     {
-        private const int TaskCount = 4;
+        private const int TaskCount = 50;
         private const int SleepTime = 50;
         private const string Path = "test.txt";
-        private static ConcurrentBag<string> Messages = new ConcurrentBag<string>();
-        private static ConcurrentBag<int> Failures = new ConcurrentBag<int>();
+        private static ConcurrentBag<string> Messages = new();
+        private static ConcurrentBag<int> Failures = new();
 
         public static async Task Main(string[] args)
         {
@@ -22,8 +22,8 @@ namespace CqrsApp
             await Task.WhenAll(tasks);
 
             sw.Stop();
-            int writeFails = Failures.Count(x => x % 2 == 0);
-            int readFails = Failures.Count(x => x % 2 == 1);
+            var writeFails = Failures.Count(x => x % 2 == 0);
+            var readFails = Failures.Count(x => x % 2 == 1);
             //foreach (var item in Messages)
             //{
             //    Console.WriteLine(item);
@@ -88,7 +88,7 @@ namespace CqrsApp
 
         public static FileStream WaitForFile(string fullPath, FileMode mode, int x)
         {
-            for (int numTries = 0; numTries < 10; numTries++)
+            for (var numTries = 0; numTries < 10; numTries++)
             {
                 FileStream fs = null;
                 try
@@ -103,7 +103,7 @@ namespace CqrsApp
                         fs.Dispose();
                     }
                     Failures.Add(x);
-                    Thread.Sleep(50);
+                    Thread.Sleep(SleepTime);
                 }
             }
 
