@@ -9,7 +9,7 @@ namespace CodeFirst
 
         public ShoppingContext()
         {
-            DbPath = """.\shopping.db""";
+            DbPath = """C:\dev\shopping.db""";
         }
 
 

@@ -8,5 +8,5 @@ public class Order
     public decimal Total { get; set; }
 
     public virtual Customer Customer { get; set; }
-    public virtual List<Item> Items { get; set; }
+    public virtual List<OrderItem> OrderItem { get; set; }
 }
