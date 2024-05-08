@@ -1,4 +1,4 @@
-﻿namespace EntityExample.Models;
+﻿namespace CodeFirst.Models;
 
 public class Order
 {
@@ -8,13 +8,5 @@ public class Order
     public decimal Total { get; set; }
 
     public virtual Customer Customer { get; set; }
-    public virtual List<OrderItem> OrderItems { get; set; }
-}
-
-public class OrderItem
-{
-    public int OrderId { get; set; }
-    public string ItemName { get; set; }
-    public int Quantity { get; set; }
-    public decimal Subtotal { get; set; }
+    public virtual List<Item> Items { get; set; }
 }

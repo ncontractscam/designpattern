@@ -10,3 +10,5 @@
 */bin/*
 /*/*/bin/*
 */*/obj/*
+/EntityExample/Migrations/*
+/EntityExample/shopping.db
