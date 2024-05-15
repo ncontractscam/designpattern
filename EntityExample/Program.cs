@@ -1,5 +1,6 @@
 ﻿using CodeFirst.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace CodeFirst
 {
@@ -7,18 +8,20 @@ namespace CodeFirst
     {
         static async Task Main(string[] args)
         {
-            Console.WriteLine("--Items--");
-            await GetAllItems();
-            await AddNewItem();
-            await GetAllItems();
+            //Console.WriteLine("--Items--");
+            //await GetAllItems();
+            //await AddNewItem();
+            //await GetAllItems();
 
-            Console.WriteLine("--Customers--");
-            await GetAllCustomers();
-            await AddNewCustomer();
-            await GetAllCustomers();
+            //Console.WriteLine("--Customers--");
+            //await GetAllCustomers();
+            //await AddNewCustomer();
+            //await GetAllCustomers();
 
-            Console.WriteLine("--Orders--");
-            await AddNewOrder();
+            //Console.WriteLine("--Orders--");
+            //await AddNewOrder();
+
+            await GetCustomerDetails();
         }
 
         public static async Task GetAllItems()
@@ -88,7 +91,7 @@ namespace CodeFirst
             }
         }
 
-        public static async Task<Customer> GetCustomer()
+        public static async Task GetCustomerDetails()
         {
             Customer customer = null;
 
@@ -100,11 +103,11 @@ namespace CodeFirst
 
                 await using (var db = new ShoppingContext())
                 {
-                    customer = await db.Customers.FirstOrDefaultAsync(c => c.Name == custName);
+                    customer = await db.Customers.Include(c => c.Orders).ThenInclude(o => o.OrderItem).ThenInclude(oi => oi.Item).FirstOrDefaultAsync(c => c.Name == custName);
                 }
             }
 
-            return customer;
+            Console.WriteLine(JsonSerializer.Serialize(customer));
         }
 
         public static async Task AddNewOrder()
