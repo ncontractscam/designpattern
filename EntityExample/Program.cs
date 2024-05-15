@@ -8,20 +8,35 @@ namespace CodeFirst
     {
         static async Task Main(string[] args)
         {
-            //Console.WriteLine("--Items--");
-            //await GetAllItems();
-            //await AddNewItem();
-            //await GetAllItems();
+            // await Items();
 
-            //Console.WriteLine("--Customers--");
-            //await GetAllCustomers();
-            //await AddNewCustomer();
-            //await GetAllCustomers();
+            // await Customers();
 
-            //Console.WriteLine("--Orders--");
-            //await AddNewOrder();
+            // await Orders();
 
             await GetCustomerDetails();
+        }
+
+        public static async Task Items()
+        {
+            Console.WriteLine("--Items--");
+            await GetAllItems();
+            await AddNewItem();
+            await GetAllItems();
+        }
+
+        public static async Task Customers()
+        {
+            Console.WriteLine("--Customers--");
+            await GetAllCustomers();
+            await AddNewCustomer();
+            await GetAllCustomers();
+        }
+
+        public static async Task Orders()
+        {
+            Console.WriteLine("--Orders--");
+            await AddNewOrder();
         }
 
         public static async Task GetAllItems()
@@ -136,22 +151,23 @@ namespace CodeFirst
 
                 var item = await db.Items.FirstOrDefaultAsync(x => x.Id == id);
 
-                // decimal total = 0;
                 var order = new Order
                 {
                     Name = name,
                     Total = item.UnitPrice,
                     OrderItem = new List<OrderItem> {
-                    new OrderItem { Item = item, Subtotal = item.UnitPrice,Quantity = 1 }
-                }
+                        new OrderItem {
+                            Item = item,
+                            Subtotal = item.UnitPrice,
+                            Quantity = 1
+                        }
+                    }
                 };
+
                 customer = await db.Customers.Include(o => o.Orders).SingleAsync(c => c.Name == customer.Name);
                 customer.Orders.Add(order);
                 await db.SaveChangesAsync();
             }
         }
-
-        // output the orders for a customer?
-
     }
 }
