@@ -7,18 +7,18 @@ namespace CodeFirst
     {
         static async Task Main(string[] args)
         {
-            // Console.WriteLine("--Items--");
-            // await GetAllItems();
-            // await AddNewItem();
-            // await GetAllItems();
+            Console.WriteLine("--Items--");
+            await GetAllItems();
+            await AddNewItem();
+            await GetAllItems();
 
-            // Console.WriteLine("--Customers--");
-            // await GetAllCustomers();
-            // await AddNewCustomer();
-            // await GetAllCustomers();
+            Console.WriteLine("--Customers--");
+            await GetAllCustomers();
+            await AddNewCustomer();
+            await GetAllCustomers();
 
             Console.WriteLine("--Orders--");
-            await AddNewOrder(await GetCustomer());
+            await AddNewOrder();
         }
 
         public static async Task GetAllItems()
@@ -92,7 +92,7 @@ namespace CodeFirst
         {
             Customer customer = null;
 
-            while(customer == null)
+            while (customer == null)
             {
                 Console.WriteLine("Enter a name for an existing customer: ");
 
@@ -107,8 +107,12 @@ namespace CodeFirst
             return customer;
         }
 
-        public static async Task AddNewOrder(Customer customer)
+        public static async Task AddNewOrder()
         {
+            Console.WriteLine("Enter a name for an existing customer: ");
+
+            var custName = Console.ReadLine();
+
             Console.WriteLine("Enter a name for a new order: ");
             var name = Console.ReadLine();
 
@@ -118,26 +122,26 @@ namespace CodeFirst
                 Console.WriteLine("Enter the item ID to add to order: ");
             } while (!int.TryParse(Console.ReadLine(), out id));
 
-            // Get the item from DB for id:
-            Item item;
+
             await using (var db = new ShoppingContext())
             {
-                item = await db.Items.SingleAsync(i => i.Id == id);
-            }
-            Console.WriteLine($"Adding {item.Name} to order {name}");
+                var customer = await db.Customers.FirstOrDefaultAsync(c => c.Name == custName);
+                if (customer == null)
+                {
+                    throw new Exception();
+                }
 
+                var item = await db.Items.FirstOrDefaultAsync(x => x.Id == id);
 
-            // decimal total = 0;
-            var order = new Order {
-                Name = name,
-                Total = item.UnitPrice,
-                OrderItem = new List<OrderItem> {
+                // decimal total = 0;
+                var order = new Order
+                {
+                    Name = name,
+                    Total = item.UnitPrice,
+                    OrderItem = new List<OrderItem> {
                     new OrderItem { Item = item, Subtotal = item.UnitPrice,Quantity = 1 }
                 }
-            };
-
-            await using (var db = new ShoppingContext())
-            {
+                };
                 customer = await db.Customers.Include(o => o.Orders).SingleAsync(c => c.Name == customer.Name);
                 customer.Orders.Add(order);
                 await db.SaveChangesAsync();
