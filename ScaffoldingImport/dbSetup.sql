@@ -1,19 +1,24 @@
-﻿CREATE TABLE [dbo].[Customer](
-	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+﻿CREATE TABLE [dbo].[Item](
 	[Name] [nvarchar](50) NOT NULL,
-	[address] [nvarchar](50) NOT NULL,
- CONSTRAINT [PK_Customer] PRIMARY KEY CLUSTERED 
+	[UnitPrice] [money] NOT NULL,
+	[Guid] [uniqueidentifier] NOT NULL,
+ CONSTRAINT [PK_Item_1] PRIMARY KEY CLUSTERED 
 (
-	[Id] ASC
+	[Guid] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
 
-CREATE TABLE [dbo].[Item](
+ALTER TABLE [dbo].[Item] ADD  CONSTRAINT [DF_Item_Guid]  DEFAULT (newid()) FOR [Guid]
+GO
+
+
+
+CREATE TABLE [dbo].[Customer](
 	[Id] [bigint] IDENTITY(1,1) NOT NULL,
 	[Name] [nvarchar](50) NOT NULL,
-	[UnitPrice] [money] NOT NULL,
- CONSTRAINT [PK_Item] PRIMARY KEY CLUSTERED 
+	[address] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_Customer] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -35,38 +40,19 @@ CREATE TABLE [dbo].[Order](
 GO
 
 
-
-CREATE TABLE [dbo].[OrderItem](
-	[Id] [bigint] IDENTITY(1,1) NOT NULL,
-	[OrderId] [bigint] NOT NULL,
-	[Quantity] [int] NOT NULL,
-	[Subtotal] [money] NOT NULL,
-	[ItemId] [bigint] NOT NULL,
- CONSTRAINT [PK_OrderItem] PRIMARY KEY CLUSTERED 
+CREATE TABLE [dbo].[Item](
+	[Name] [nvarchar](50) NOT NULL,
+	[UnitPrice] [money] NOT NULL,
+	[Guid] [uniqueidentifier] NOT NULL,
+ CONSTRAINT [PK_Item_1] PRIMARY KEY CLUSTERED 
 (
-	[Id] ASC
+	[Guid] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
 
-
-
-
-ALTER TABLE [dbo].[OrderItem]  WITH CHECK ADD  CONSTRAINT [FK_OrderItem_Item] FOREIGN KEY([ItemId])
-REFERENCES [dbo].[Item] ([Id])
+ALTER TABLE [dbo].[Item] ADD  CONSTRAINT [DF_Item_Guid]  DEFAULT (newid()) FOR [Guid]
 GO
-
-ALTER TABLE [dbo].[OrderItem] CHECK CONSTRAINT [FK_OrderItem_Item]
-GO
-
-ALTER TABLE [dbo].[OrderItem]  WITH CHECK ADD  CONSTRAINT [FK_OrderItem_Order] FOREIGN KEY([OrderId])
-REFERENCES [dbo].[Order] ([Id])
-GO
-
-ALTER TABLE [dbo].[OrderItem] CHECK CONSTRAINT [FK_OrderItem_Order]
-GO
-
-
 
 
 ALTER TABLE [dbo].[Order]  WITH CHECK ADD  CONSTRAINT [FK_Order_Customers] FOREIGN KEY([CustomerId])
@@ -75,6 +61,3 @@ GO
 
 ALTER TABLE [dbo].[Order] CHECK CONSTRAINT [FK_Order_Customers]
 GO
-
-
-
