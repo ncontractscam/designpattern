@@ -2,7 +2,7 @@
 
 public partial class Order
 {
-    public long Id { get; set; }
+    public long ZOrderId { get; set; }
 
     public string Name { get; set; } = null!;
 

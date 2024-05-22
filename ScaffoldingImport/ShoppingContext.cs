@@ -27,51 +27,27 @@ public partial class ShoppingContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Customer>(entity =>
-        {
-            entity.ToTable("Customer");
-
-            entity.Property(e => e.Address)
-                .HasMaxLength(50)
-                .HasColumnName("address");
-            entity.Property(e => e.Name).HasMaxLength(50);
-        });
-
         modelBuilder.Entity<Item>(entity =>
         {
-            entity.HasKey(e => e.Guid).HasName("PK_Item_1");
-
+            entity.HasKey(i => i.Guid);
             entity.ToTable("Item");
-
-            entity.Property(e => e.Guid).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.Name).HasMaxLength(50);
-            entity.Property(e => e.UnitPrice).HasColumnType("money");
         });
-
-        modelBuilder.Entity<Order>(entity =>
-        {
-            entity.ToTable("Order");
-
-            entity.Property(e => e.Name).HasMaxLength(50);
-            entity.Property(e => e.Total).HasColumnType("money");
-
-            entity.HasOne(d => d.Customer).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.CustomerId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Order_Customers");
-        });
-
         modelBuilder.Entity<OrderItem>(entity =>
         {
             entity.ToTable("OrderItem");
-
-            entity.Property(e => e.Subtotal).HasColumnType("money");
-
-            entity.HasOne(d => d.Order).WithMany(p => p.OrderItems)
-                .HasForeignKey(d => d.OrderId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_OrderItem_Order");
+            entity.Property(oi => oi.ZOrderId).HasColumnName("OrderId");
         });
-
+        modelBuilder.Entity<Order>(entity =>
+        {
+            entity.ToTable("Order");
+            entity.HasKey(o => o.ZOrderId);
+            entity.Property(o => o.ZOrderId).HasColumnName("Id");
+            entity.HasMany(o => o.OrderItems).WithOne(oi => oi.Order).HasForeignKey(o => o.ZOrderId);
+        });
+        modelBuilder.Entity<Customer>(entity =>
+        {
+            entity.ToTable("Customer");
+            entity.Property(c => c.Address).HasMaxLength(50);
+        });
     }
 }

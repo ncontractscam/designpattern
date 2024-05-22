@@ -4,7 +4,7 @@ public partial class OrderItem
 {
     public long Id { get; set; }
 
-    public long OrderId { get; set; }
+    public long ZOrderId { get; set; }
 
     public int Quantity { get; set; }
 

@@ -2,6 +2,7 @@ using Bogus;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using ScaffoldingImport;
+using ScaffoldingImport.Models;
 
 namespace Entity.Tests
 {
@@ -31,7 +32,42 @@ namespace Entity.Tests
         [Test]
         public async Task InitializedTest()
         {
-            Assert.Pass();
+            //Arrange
+            //Setup A Order on a customer
+            await using (var shoppingContext = new ShoppingContext())
+            {
+                var existingItem = await shoppingContext.Items.FirstOrDefaultAsync();
+                var existing = await shoppingContext.Customers.FirstOrDefaultAsync();
+                var order = new Order
+                {
+                    Customer = existing,
+                    Name = "MyName",
+                    Total = 10,
+                    OrderItems = new List<OrderItem>
+                    {
+                        new OrderItem
+                        {
+                            ItemGuid = existingItem.Guid,
+                            Quantity = 3,
+                            Subtotal = 3 * existingItem.UnitPrice
+                        }
+                    }
+                };
+                shoppingContext.Orders.Add(order);
+                await shoppingContext.SaveChangesAsync();
+            }
+
+            //Act
+
+            await using (var shoppingContext = new ShoppingContext())
+            {
+                var result = await shoppingContext.OrderItems.FirstOrDefaultAsync();
+                Assert.That(result, Is.Not.Null);
+            }
+
+
+            //Assert
+            //Cameron bets there will be no order on order item
         }
 
 
