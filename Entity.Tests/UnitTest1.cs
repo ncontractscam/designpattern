@@ -40,12 +40,12 @@ namespace Entity.Tests
         [Test]
         public async Task InitializedTest()
         {
-
+            Assert.Pass();
         }
 
 
         //doing cleanup within setup to allow us to query databases after, generally when doing Integration Tests like this, you want to leave the database clean
-        //[OneTimeTearDown]
+        [OneTimeTearDown]
         public async Task Cleanup()
         {
             await using (var shoppingContext = new ShoppingContext())

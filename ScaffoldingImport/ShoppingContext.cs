@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ScaffoldingImport.Models;
 
 namespace ScaffoldingImport;
 
@@ -39,8 +38,11 @@ public partial class ShoppingContext : DbContext
 
         modelBuilder.Entity<Item>(entity =>
         {
+            entity.HasKey(e => e.Guid).HasName("PK_Item_1");
+
             entity.ToTable("Item");
 
+            entity.Property(e => e.Guid).HasDefaultValueSql("(newid())");
             entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.UnitPrice).HasColumnType("money");
         });
@@ -63,11 +65,6 @@ public partial class ShoppingContext : DbContext
             entity.ToTable("OrderItem");
 
             entity.Property(e => e.Subtotal).HasColumnType("money");
-
-            entity.HasOne(d => d.Item).WithMany(p => p.OrderItems)
-                .HasForeignKey(d => d.ItemId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_OrderItem_Item");
 
             entity.HasOne(d => d.Order).WithMany(p => p.OrderItems)
                 .HasForeignKey(d => d.OrderId)

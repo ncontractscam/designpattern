@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ScaffoldingImport.Models;
+namespace ScaffoldingImport;
 
 public partial class Order
 {

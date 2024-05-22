@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ScaffoldingImport.Models;
+namespace ScaffoldingImport;
 
 public partial class OrderItem
 {
@@ -13,9 +13,7 @@ public partial class OrderItem
 
     public decimal Subtotal { get; set; }
 
-    public long ItemId { get; set; }
-
-    public virtual Item Item { get; set; } = null!;
+    public Guid ItemGuid { get; set; }
 
     public virtual Order Order { get; set; } = null!;
 }
