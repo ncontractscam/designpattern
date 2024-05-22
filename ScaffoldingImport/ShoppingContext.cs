@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ScaffoldingImport.Models;
 
 namespace ScaffoldingImport;
 
