@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeFirst", "CodeFirst.cspr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScaffoldingImport", "..\ScaffoldingImport\ScaffoldingImport.csproj", "{802789B4-0BFE-4971-BCCE-AE7C2E63005C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entity.Tests", "..\Entity.Tests\Entity.Tests.csproj", "{966423C1-0612-4BDE-8C59-CF2AFC85EECF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{802789B4-0BFE-4971-BCCE-AE7C2E63005C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{802789B4-0BFE-4971-BCCE-AE7C2E63005C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{802789B4-0BFE-4971-BCCE-AE7C2E63005C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{966423C1-0612-4BDE-8C59-CF2AFC85EECF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{966423C1-0612-4BDE-8C59-CF2AFC85EECF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{966423C1-0612-4BDE-8C59-CF2AFC85EECF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{966423C1-0612-4BDE-8C59-CF2AFC85EECF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
