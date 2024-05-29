@@ -35,14 +35,14 @@ public partial class ShoppingContext : DbContext
         modelBuilder.Entity<OrderItem>(entity =>
         {
             entity.ToTable("OrderItem");
-            entity.Property(oi => oi.ZOrderId).HasColumnName("OrderId");
+            entity.Property(oi => oi.OrderId).HasColumnName("OrderId");
         });
         modelBuilder.Entity<Order>(entity =>
         {
             entity.ToTable("Order");
-            entity.HasKey(o => o.ZOrderId);
-            entity.Property(o => o.ZOrderId).HasColumnName("Id");
-            entity.HasMany(o => o.OrderItems).WithOne(oi => oi.Order).HasForeignKey(o => o.ZOrderId);
+            entity.HasKey(o => o.OrderId);
+            entity.Property(o => o.OrderId).HasColumnName("Id");
+            entity.HasMany(o => o.OrderItems).WithOne(oi => oi.Order).HasForeignKey(o => o.OrderId);
         });
         modelBuilder.Entity<Customer>(entity =>
         {

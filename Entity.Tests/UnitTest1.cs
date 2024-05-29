@@ -1,4 +1,3 @@
-using Bogus;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using ScaffoldingImport;
