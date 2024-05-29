@@ -46,7 +46,7 @@ namespace Entity.Tests
                     {
                         new OrderItem
                         {
-                            ItemGuid = existingItem.Guid,
+                            ItemGuid = existingItem.uniqueItemId,
                             Quantity = 3,
                             Subtotal = 3 * existingItem.UnitPrice
                         }
@@ -69,6 +69,46 @@ namespace Entity.Tests
             //Cameron bets there will be no order on order item
         }
 
+        [Test]
+        public async Task GetItemWithOrder()
+        {
+            //Arrange
+            //Setup A Order on a customer
+            await using (var shoppingContext = new ShoppingContext())
+            {
+                var existingItem = await shoppingContext.Items.FirstOrDefaultAsync();
+                var existing = await shoppingContext.Customers.FirstOrDefaultAsync();
+                var order = new Order
+                {
+                    Customer = existing,
+                    Name = "MyName",
+                    Total = 10,
+                    OrderItems = new List<OrderItem>
+                    {
+                        new OrderItem
+                        {
+                            Item = existingItem,
+                            Quantity = 3,
+                            Subtotal = 3 * existingItem.UnitPrice
+                        }
+                    }
+                };
+                shoppingContext.Orders.Add(order);
+                await shoppingContext.SaveChangesAsync();
+            }
+
+            //Act
+            OrderItem? result = null;
+            await using (var shoppingContext = new ShoppingContext())
+            {
+                result = await shoppingContext.OrderItems.Include(x => x.Item).FirstOrDefaultAsync();
+            }
+
+            //Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Item, Is.Not.Null);
+            Assert.That(result.Item.Name, Is.Not.Null);
+        }
 
         //doing cleanup within setup to allow us to query databases after, generally when doing Integration Tests like this, you want to leave the database clean
         //[OneTimeTearDown]

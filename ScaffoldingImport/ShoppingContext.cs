@@ -24,18 +24,19 @@ public partial class ShoppingContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=EF;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Item>(entity =>
         {
-            entity.HasKey(i => i.Guid);
+            entity.HasKey(i => i.uniqueItemId);
             entity.ToTable("Item");
+            entity.Property(o => o.uniqueItemId).HasColumnName("Guid");
         });
         modelBuilder.Entity<OrderItem>(entity =>
         {
             entity.ToTable("OrderItem");
             entity.Property(oi => oi.OrderId).HasColumnName("OrderId");
+            entity.HasOne(oi => oi.Item).WithMany().HasForeignKey(oi => oi.ItemGuid);
         });
         modelBuilder.Entity<Order>(entity =>
         {

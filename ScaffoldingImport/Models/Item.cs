@@ -6,5 +6,5 @@ public partial class Item
 
     public decimal UnitPrice { get; set; }
 
-    public Guid Guid { get; set; }
+    public Guid uniqueItemId { get; set; }
 }
